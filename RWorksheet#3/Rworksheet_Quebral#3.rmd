@@ -1,0 +1,108 @@
+---
+title: "RWorksheet_Quebral#3.rmd"
+author: "Myles Andrei Quebral"
+date: "2024-09-30"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. There is a built-in vector LETTERS contains the uppercase letters of the alphabetand letters which contains the lowercase letters of the alphabet.
+
+# Based on the above vector LETTERS:
+# a. You need to produce a vector that contains the first 11 letters.
+```{r}
+Letters <- c("A","B","C","D","E","F","G","H","I","J","K","L","M","N", "O","P","Q","R","S","T","U","V","W","X","Y","Z")
+
+letters <- c("a","b","c","d","e","f","g","h","i","j","k","l","m","n", "o","p","q","r","s","t","u","v","w","x","y","z")
+```
+
+```{r}
+eleven <- Letters[1:11]
+eleven
+```
+
+#b. Produce a vector that contains the odd numbered letters.
+```{r}
+odd <- Letters[seq("1","26", by = 2)]
+odd
+```
+
+#c. Produce a vector that contains the vowels
+```{r}
+vowels <- Letters[c(1,5,9,15,21)]
+vowels
+```
+#d. Produce a vector that contains the last 5 lowercase letters.
+```{r}
+last5 <- tail(letters,5)
+last5
+```
+#e. Produce a vector that contains letters between 15 to 24 letters in lowercase.
+```{r}
+between <- letters[c(15:24)]
+between
+```
+#2. Create a vector(not a dataframe) with the average temperatures in April for Tugue-garao City, Manila, Iloilo City, Tacloban, Samal Island, and Davao City. The average temperatures in Celcius are 42, 39, 34, 34, 30, and 27 degrees.
+```{r}
+tempp <- c(42,39,34,34,30,27)
+```
+#a. What is the R code and its result for creating a character vector for the city/townof Tuguegarao City, Manila, Iloilo City, Tacloban,Samal Island, and Davao City? Name the object as city. The names should follow the same order as in the instruction.
+```{r}
+place <- c("Tuguegarao City", "Manila", "Iloilo City", "Tacloban","Samal Island", "Davao City")
+```
+#b. The average temperatures in Celcius are 42, 39, 34, 34, 30, and 27 degrees.Name the object as temp. Write the R code and its output. Numbers should also follow what is in the instruction.
+```{r}
+temp <- mean(tempp)
+temp
+```
+#c. Create a dataframe to combine the city and the temp by using ‘data.frame(). Whatthe R code and its result?
+```{r}
+city_temp <- data.frame(tempp,place)
+city_temp
+```
+
+#d. Associate the dataframe you have created in 2.(c) by naming the columns using the names() function. Change the column names by using names() function as City andTemperature. What is the R code and its result?
+```{r}
+names(city_temp) <-  c("Temperature", "City") 
+city_temp
+```
+#e. Print the structure by using str() function. Describe the output.
+```{r}
+
+
+
+str(city_temp)
+```
+# It displayed the 2 variable and 6 objects on data frame.
+
+#f. From the answer in d, what is the content of row 3 and row 4 What is its R code and its output?
+```{r}
+
+
+
+row_content3 <- city_temp[3,]
+row_content4 <- city_temp[4,]
+
+row_content3
+row_content4
+
+```
+
+#g. From the answer in d, display the city with highest temperature and the city with the lowest temperature. What is its R code and its output?
+```{r}
+
+
+
+max_index <- max(city_temp$Temperature)
+max_index
+
+min_index <- min(city_temp$Temperature)
+min_index
+```
+#2. Create a matrix of one to eight and eleven to fourteen with four columns and three rows.
+
+matrix(c(1,2,3,4,5,6,7,8,9,10,11),nrow=3,ncol=4)
+
