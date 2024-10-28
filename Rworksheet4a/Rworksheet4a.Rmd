@@ -1,0 +1,245 @@
+---
+title: "RWorksheet_Quebral#4a"
+author: "Myles Andrei Quebral"
+date: "2024-10-14"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#1. The table below shows the data about shoe size and height. Create a data frame. a. Describe the data.
+
+```{r}
+Shoe_size <- c(6.7,9.0,8.5,8.5,10.5,7.0,9.5,9.0,13.0,7.5,10.5,8.5,12.0,10.5)
+Height <- c(66.0,68.0,64.5,65.0,70.0,64.0,70.0,71.0,72.0,64.0,74.5,67.0,71.0,71.0)
+Gender <- c("F","F","F","F","M","F","F","F","M","F","M","F","M","M")
+Shoe.size <- c(13.0,11.5,8.5,5.0,10.0,6.5,7.5,8.5,10.5,8.5,10.5,11.0,9.0,13.0)
+Height2 <- c(77.0,72.0,59.0,62.0,72.0,66.0,64.0,67.0,73.0,69.0,72.0,70.0,69.0,70.0)
+Gender2 <- c("M","M","F","F","M","F","F","M","M","F","M","M","M","M")
+
+housedata <- data.frame(Shoe_size,Height,Gender,Shoe.size,Height2,Gender2)
+print(housedata)
+
+```
+#b. Create a subset by males and females with their corresponding shoe size and height.What its result? Show the R scripts.
+```{r}
+male_subdata <- subset(housedata , Gender == "M")
+male_subdata
+female_subdata <- subset(housedata , Gender == "F")
+female_subdata
+```
+#c. Find the mean of shoe size and height of the respondents. Write the R scripts and its result.
+
+```{r}
+mean_shoesize <- mean(housedata$Shoe_size)
+mean_shoesize
+
+mean_height <- mean(housedata$Height)
+mean_height
+
+```
+#d. Is there a relationship between shoe size and height? Why?
+
+
+#2. Construct character vector months to a factor with factor() and assign the result tofactor_months_vector. Print out factor_months_vector and assert that R prints out the factor levels below the actual values.
+
+```{r}
+
+
+months <- c("March","April","January","November","January",
+"September","October","September","November","August",
+"January","November","November","February","May","August","July","December","August","August","September","November","February",
+"April")
+factor_months_vector <- factor(months)
+factor_months_vector
+```
+#Then check the summary() of the months_vector and factor_months_vector. | Inter-pret the results of both vectors. Are they both equally useful in this case?
+```{r}
+summary(months)
+```
+
+```{r}
+summary(factor_months_vector)
+```
+#4. Create a vector and factor for the table below.
+```{r}
+direction <- c("East","West","North")
+frequency <- c(1,4,3)
+factor_data <- factor(direction, levels = c("East", "West", "North"))
+factor_data
+```
+#5. Enter the data below in Excel with file name = import_march.csv
+```{r}
+setwd("/cloud/project")
+import_march <- read.csv("import_march.csv")
+import_march
+```
+#a. Import the excel file into the Environment Pane using read.table() function. Write the code.
+```{r}
+setwd("/cloud/project")
+read_table <- read.table("import_march.csv", header = TRUE, sep = ",")
+read_table
+```
+#b. View the dataset. Write the R scripts and its result.
+```{r}
+head(import_march)
+```
+
+#a. Create an R Program that allows the User to randomly select numbers from 1 to 50. Then display the chosen number. If the number is beyond the range of the selected choice, it will have to display a string “The number selected is beyond the range of 1 to 50”. If number 20 is inputted by the User, it will have to display “TRUE”, otherwise display the input number.
+
+```{r}
+
+readnum <- readline(prompt="Enter number:")
+if (readnum < 50 && !20) {
+  print(readnum)
+} else if (readnum == 20) {
+  print("TRUE")
+} else {
+  print("Number is beyond the range of the selected choice")
+}
+```
+
+#At ISATU University’s traditional cafeteria, snacks can only be purchased with bills. A long-standing rule at the concession stand is that snacks must be purchased with as few coins as possible. There are three types of bills: 50 pesos, 100 pesos, 200 pesos, 500 pesos, 1000 pesos. a. Write a function that prints the minimum number of bills that must be paid, given the price of the snack.
+#Input: Price of snack (a random number divisible by 50) Output: Minimum number of bills needed to purchase a snack.
+
+```{r}
+readprice <- 120
+if(readprice<=50){
+  print(" 50 peso bills needed to purchase a snack.")
+  }else if (readprice <=100 && readprice >= 50){
+    print(" 100 peso bills needed to purchase a snack.")
+  }else if (readprice <= 200 && readprice >=100){
+  print(" 200 peso bills needed to purchase a snack.")
+}else if (readprice <= 500 && readprice >= 200){
+  print(" 500 peso bills needed to purchase a snack.")
+}else if (readprice <= 1000 && readprice >= 500){
+  print(" 1000 peso bills needed to purchase a snack.")
+  }
+```
+#8. The following is each student’s math score for one semester. Based on this, answer the following questions.
+# a. Create a dataframe from the above table. Write the R codes and its output.
+```{r}
+Name <- c("Annie","Thea","Steve","Hanna")
+Grade1 <-c(85,65,85,100)
+Grade2 <-c(65,75,55,75)
+Grade3 <-c(85,90,80,100)
+Grade4 <-c(100,90,85,90)
+df <- data.frame(Name,Grade1,Grade2,Grade3,Grade4)
+df
+
+```
+#b. Without using the rowMean function, output the average score of students whose average math score over 90 points during the semester. write R code and its output. Example Output: Annie’s average grade this semester is 88.75.
+```{r}
+Annie <- "Annie"
+Thea <- "Thea"
+Steve <- "Steve"
+Hannah <- "Hannah"
+readave <- readline(prompt="Select Student ")
+if(readave == Annie){
+  x <-(85+65+85+100)/4
+  paste("Annie's average grade this semester is" ,x)
+}else if(readave == Thea){
+  y <- (65+75+90+75)/4
+  paste("Thea's average grade this semester is" ,y)
+}else if(readave == Steve){
+  a <- (85+55+80+85)/4
+  paste("Steve's average grade this semester is" ,a)
+}else if (readave == Hannah){
+  b <- (100+75+100+90)/4
+  paste("Hannah's average grade this semester is" ,b)
+}else{
+  print("Check the name spelling")
+}
+```
+#c. Without using the mean function, output as follows for the tests in which the average score was less than 80 out of 4 tests.Example output: The nth test was difficualt.
+
+```{r}
+sum_test1 <- sum(df$Grade1)
+sum_test2 <- sum(df$Grade2)
+sum_test3 <-sum(df$Grade3)
+sum_test4 <- sum(df$Grade4)
+
+# Calculate the number of students
+num_students <- length(Name)
+
+# Calculate the averages manually
+average_test1 <- sum_test1 / num_students
+average_test2 <- sum_test2 / num_students
+average_test3 <- sum_test3 / num_students
+average_test4 <- sum_test4 / num_students
+
+# Check if averages are less than 80 and output the result
+if (average_test1 < 80) {
+  print("The 1st test was difficult.")
+}
+if (average_test2 < 80) {
+  print("The 2nd test was difficult.")
+}
+if (average_test3 < 80) {
+  print("The 3rd test was difficult.")
+}
+if (average_test4 < 80) {
+  print("The 4th test was difficult.")
+}
+```
+#d. Without using the max function, output as follows for students whose highest score for a semester exceeds 90 points Example Output: Annie’s highest grade this semester is 95.
+```{r}
+hi_grade <- Grade1[1]
+if (Grade2[1] > hi_grade) {
+  hi_grade <- Grade2[1]
+}
+if (Grade3[1] > hi_grade) {
+  hi_grade <- Grade3[1]
+}
+if (Grade4[1] > hi_grade) {
+  hi_grade <- Grade4[1]
+}
+if (hi_grade >= 90) {
+  cat("Annie's highest grade this semester is", hi_grade, "\n")
+}
+
+
+high_grade <- Grade1[2]
+if (Grade2[2] > high_grade) {
+  high_grade <- Grade2[2]
+}
+if (Grade3[2] > high_grade) {
+  high_grade <- Grade3[2]
+}
+if (Grade4[2] > high_grade) {
+  high_grade <- Grade4[2]
+}
+if (high_grade >= 90) {
+  cat("Thea's highest grade this semester is", high_grade, "\n")
+}
+
+
+h_grade <- Grade1[3]
+if (Grade2[3] > h_grade) {
+  h_grade <- Grade2[3]
+}
+if (Grade3[3] > h_grade) {
+  h_grade <- Grade3[3]
+}
+if (Grade4[3] > h_grade) {
+  h_grade <- Grade4[3]
+}
+if (h_grade >= 90) {
+  cat("Steve's highest grade this semester is", h_grade, "\n")
+}
+
+grade_high <- Grade1[4]
+if (Grade2[4] > grade_high) {
+  grade_high <- Grade2[4]
+}
+if (Grade3[4] > grade_high) {
+  grade_high <- Grade3[4]
+}
+if (Grade4[4] > grade_high) {
+  grade_high <- Grade4[4]
+}
+if (grade_high >= 90) {
+  cat("Hanna's highest grade this semester is", grade_high, "\n")
+}
