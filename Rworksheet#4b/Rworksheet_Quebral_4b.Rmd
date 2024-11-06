@@ -1,5 +1,5 @@
 ---
-title: "Rworksheet_Quebral#4b"
+title: "Rworksheet_Quebral_4b"
 author: "Myles Andrei Quebral"
 date: "2024-10-28"
 output: pdf_document
@@ -202,7 +202,7 @@ legend("topright", legend = levels(iris$Species),
 # 7. Import the alexa-file.xlsx. Check on the variations. Notice that there are extra whitespaces among black variants (Black Dot, Black Plus, Black Show, BlackSpot). Also on the white variants (White Dot, White Plus, White Show, White Spot).
 #a. Rename the white and black variants by using gsub() function.
 
-```{r}
+```{r alexa}
 alexa_docs <- read.csv("alexa.csv")
 
 ```
@@ -214,7 +214,7 @@ alexa_data <- alexa_docs %>%
   mutate(variation = gsub("Black ", "Green", variation),
          variation = gsub("White ", "Blue", variation))
 
-alexa_data
+
 ```
 #b. Get the total number of each variations and save it into another object. Save the object as variations.RData. Write the R scripts. What is its result?
 ```{r}
