@@ -1,5 +1,5 @@
 ---
-title: "Rworksheet_Quebral#4b"
+title: "RWorksheet_Quebral#4b"
 author: "Myles Andrei Quebral"
 date: "2024-10-28"
 output: pdf_document
@@ -204,7 +204,7 @@ legend("topright", legend = levels(iris$Species),
 
 ```{r}
 alexa_csv <- read.csv("alexa.csv")
-
+alexa_csv
 ```
 
 
