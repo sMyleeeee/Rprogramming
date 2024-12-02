@@ -1,0 +1,1158 @@
+---
+title: "RWorksheet5"
+author: "Quebral,Francisco,Marquez"
+date: "2024-11-18"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+
+```{r}
+url <- "https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250c"
+```
+
+
+
+
+
+
+
+```{r}
+library(rvest)
+page <- read_html(url)
+```
+
+```{r}
+library(httr)
+library(dplyr)
+library(rvest)
+rows <-  page %>%
+  html_nodes('h3.ipc-title__text') %>% 
+  html_text()
+rows
+```
+```{r}
+
+rows <- as.data.frame(rows)
+ Titles <- rows[-c(1, nrow(rows)), ]
+
+Titles[c(1:20)]
+```
+
+```{r}
+ratings <- page %>% html_nodes("span.ipc-rating-star--rating")  %>%  html_text()
+
+ratings[c(1:20)]
+```
+
+```{r}
+The_number_of_people_voted <- page %>% html_nodes("span.ipc-rating-star--voteCount")  %>%  html_text()
+
+print(The_number_of_people_voted[c(1:20)])
+```
+
+```{r}
+library(stringr)
+episodes <- page %>% html_nodes("span.sc-300a8231-7.eaXxft.cli-title-metadata-item")  %>%  html_text()  
+
+episode_numbers <- str_extract(episodes, "\\d+ eps")
+
+
+episode_numbers <- str_remove(episode_numbers, " eps")
+
+
+episode_numbers <- as.data.frame(episode_numbers)
+episode_numbers <- episode_numbers[!is.na(episode_numbers)]
+print(episode_numbers[c(1:20)])
+```
+
+```{r}
+episodes <- page %>% html_nodes("span.sc-300a8231-7.eaXxft.cli-title-metadata-item") %>% html_text()
+
+
+year_data <- str_extract(episodes, "\\d{4}")
+
+
+year_data <- year_data[!is.na(year_data)]
+
+
+year_data <- as.numeric(year_data)
+
+print(year_data[c(1:20)])
+```
+
+```{r}
+Imdb <- data.frame(Titles,ratings,The_number_of_people_voted,episode_numbers,year_data)
+Imdb
+
+```
+#2. From the 50 tv shows, select at least 5 tv shows to scrape 20 user reviews that will include the reviewer’s name, date of reviewed, user rating, title of the review, the numbers for “is helpful” and “is not helpful”, and text reviews.
+```{r}
+link <-  "https://www.imdb.com/title/tt5491994/reviews/?ref_=tt_urv_sm"
+link1 <- "https://www.imdb.com/title/tt0185906/reviews/?ref_=tt_urv_sm"
+link2 <- "https://www.imdb.com/title/tt7366338/reviews/?ref_=tt_urv_sm"
+link3 <- "https://www.imdb.com/title/tt0306414/reviews/?ref_=tt_urv_sm"
+link4 <- "https://www.imdb.com/title/tt0417299/reviews/?ref_=tt_urv_sm"
+window <- read_html(link)
+window1 <- read_html(link1)
+window2 <- read_html(link2)
+window3 <- read_html(link3)
+window4 <- read_html(link4)
+```
+```{r}
+Reviewers_name <-  window %>%
+  html_nodes("a.ipc-link.ipc-link--base") %>% 
+  html_text()
+
+Reviewers_names <- Reviewers_name[Reviewers_name != "Permalink"]
+Reviewers_names[c(1:20)]
+```
+```{r}
+Date_of_Reviewed <-  window %>%
+  html_nodes("li.ipc-inline-list__item.review-date") %>% 
+  html_text()
+
+Date_of_Reviewed[c(1:20)]
+```
+```{r}
+Ratings <-  window %>%
+  html_nodes("span.ipc-rating-star--rating") %>% 
+  html_text()
+
+Ratings[c(1:20)]
+```
+```{r}
+Title <-  window %>%
+  html_nodes("h3.ipc-title__text") %>% 
+  html_text()
+
+as.data.frame(Title)
+Title[c(1:20)]
+```
+```{r}
+
+Helpful <- window %>%
+  html_nodes("span.ipc-voting__label__count.ipc-voting__label__count--up") %>%
+  html_text()
+Helpful[c(1:20)]
+```
+
+```{r}
+Not_Helpful <- window %>%
+  html_nodes("span.ipc-voting__label__count ipc-voting__label__count--up")  %>%
+  html_text()
+  
+Not_Helpful[c(1:20)]
+```
+
+```{r}
+Review_text <- window %>% 
+   html_nodes("div.ipc-html-content-inner-div")  %>%
+  html_text()
+Review_text[c(1:20)]
+```
+
+```{r}
+Reviewers_name1 <-  window1 %>%
+  html_nodes("a.ipc-link.ipc-link--base") %>% 
+  html_text()
+
+Reviewers_name1 <- Reviewers_name1[Reviewers_name1 != "Permalink"]
+Reviewers_name1[c(1:20)]
+```
+```{r}
+Date_of_Reviewed1 <-  window1 %>%
+  html_nodes("li.ipc-inline-list__item.review-date") %>% 
+  html_text()
+
+Date_of_Reviewed1[c(1:20)]
+```
+```{r}
+Ratings1 <-  window1 %>%
+  html_nodes("span.ipc-rating-star--rating") %>% 
+  html_text()
+
+Ratings1[c(1:20)]
+```
+```{r}
+Title1 <-  window1 %>%
+  html_nodes("h3.ipc-title__text") %>% 
+  html_text()
+
+Title1[c(1:20)]
+```
+```{r}
+Helpful1 <- window1 %>%
+  html_nodes("scan.ipc-voting__label__count ipc-voting__label__count--up") %>%
+  html_text()
+Helpful1[c(1:20)]
+```
+```{r}
+Not_Helpful1 <- window1 %>%
+  html_nodes("span.ipc-voting__label__count ipc-voting__label__count--up")  %>%
+  html_text()
+Not_Helpful1[c(1:20)]
+```
+```{r}
+Review_text1 <- window1 %>% 
+   html_nodes("div.ipc-html-content-inner-div")  %>%
+  html_text()
+Review_text[c(1:20)]
+```
+```{r}
+Reviewers_name2 <-  window2 %>%
+  html_nodes("a.ipc-link.ipc-link--base") %>% 
+  html_text()
+
+Reviewers_names2<-Reviewers_name2[Reviewers_name2 != "Permalink"]
+Reviewers_names2[c(1:20)]
+```
+```{r}
+Date_of_Reviewed2 <-  window2 %>%
+  html_nodes("li.ipc-inline-list__item.review-date") %>% 
+  html_text()
+
+Date_of_Reviewed2[c(1:20)]
+```
+```{r}
+Ratings2 <-  window2 %>%
+  html_nodes("span.ipc-rating-star--rating") %>% 
+  html_text()
+
+Ratings2[c(1:20)]
+```
+```{r}
+Title2 <-  window2 %>%
+  html_nodes("h3.ipc-title__text") %>% 
+  html_text()
+
+
+Title2[c(1:20)]
+```
+```{r}
+Helpful2 <- window2 %>%
+  html_nodes("scan.ipc-voting__label__count ipc-voting__label__count--up") %>%
+  html_text()
+Helpful2[c(1:20)]
+```
+
+```{r}
+Not_Helpful2 <- window2 %>%
+  html_nodes("span.ipc-voting__label__count ipc-voting__label__count--up")  %>%
+  html_text()
+Not_Helpful2[c(1:20)]
+```
+```{r}
+Review_text2 <- window2 %>% 
+   html_nodes("div.ipc-html-content-inner-div")  %>%
+  html_text()
+Review_text2[c(1:20)]
+```
+```{r}
+Reviewers_name3 <-  window3 %>%
+  html_nodes("a.ipc-link.ipc-link--base") %>% 
+  html_text()
+
+Reviewers_names3 <- Reviewers_name3[Reviewers_name3 != "Permalink"]
+Reviewers_names3[c(1:20)]
+```
+```{r}
+Date_of_Reviewed3 <-  window3 %>%
+  html_nodes("li.ipc-inline-list__item.review-date") %>% 
+  html_text()
+
+Date_of_Reviewed3[c(1:20)]
+```
+```{r}
+Ratings3 <-  window3 %>%
+  html_nodes("span.ipc-rating-star--rating") %>% 
+  html_text()
+
+Ratings3[c(1:20)]
+```
+```{r}
+Title3 <-  window3 %>%
+  html_nodes("h3.ipc-title__text") %>% 
+  html_text()
+
+Title3[c(1:20)]
+```
+```{r}
+Helpful3 <- window3 %>%
+  html_nodes("scan.ipc-voting__label__count ipc-voting__label__count--up") %>%
+  html_text()
+Helpful3[c(1:20)]
+```
+
+```{r}
+Not_Helpful3 <- window3 %>%
+  html_nodes("span.ipc-voting__label__count ipc-voting__label__count--up")  %>%
+  html_text()
+Not_Helpful3[c(1:20)]
+```
+
+```{r}
+Review_text3 <- window3 %>% 
+   html_nodes("div.ipc-html-content-inner-div")  %>%
+  html_text()
+Review_text3[c(1:20)]
+```
+
+```{r}
+Reviewers_name4 <-  window4 %>%
+  html_nodes("a.ipc-link.ipc-link--base") %>% 
+  html_text()
+
+Reviewers_names4 <-Reviewers_name4[Reviewers_name4 != "Permalink"]
+Reviewers_names4[c(1:20)]
+```
+```{r}
+Date_of_Reviewed4 <-  window4 %>%
+  html_nodes("li.ipc-inline-list__item.review-date") %>% 
+  html_text()
+
+Date_of_Reviewed4[c(1:20)]
+```
+```{r}
+Ratings4 <-  window4 %>%
+  html_nodes("span.ipc-rating-star--rating") %>% 
+  html_text()
+
+Ratings4[c(1:20)]
+```
+```{r}
+Title4 <-  window4 %>%
+  html_nodes("h3.ipc-title__text") %>% 
+  html_text()
+
+
+Title4[c(1:20)]
+```
+```{r}
+Helpful4 <- window4 %>%
+  html_nodes("scan.ipc-voting__label__count ipc-voting__label__count--up") %>%
+  html_text()
+Helpful4
+```
+```{r}
+Not_Helpful4 <- window4 %>%
+  html_nodes("span.ipc-voting__label__count ipc-voting__label__count--up")  %>%
+  html_text()
+Not_Helpful4
+```
+```{r}
+Review_text4 <- window4 %>% 
+   html_nodes("div.ipc-html-content-inner-div")  %>%
+  html_text()
+Review_text4
+```
+#3. Create a time series graph for the tv shows released by year. Which year has the most number of tv shows released?
+```{r}
+library(ggplot2)
+tv_data_grouped <- Imdb %>%
+  group_by(year_data) %>%
+  summarize(Titles = n())
+
+ggplot(tv_data_grouped, aes(x = year_data, y = Titles)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Year", y = "Number of TV Shows", title = "TV Shows Released by Year") +
+  theme_minimal()
+```
+#--------------------------------------------------------------------------------------------
+#AMAZON
+
+#4. Select 5 categories from Amazon and select 30 products from each category.
+
+```{r}
+library(polite)
+polite::use_manners(save_as = 'polite_scrape.R')
+
+url <- 'https://www.amazon.com'
+
+
+session <- bow(url,
+               user_agent = "Educational")
+session
+```
+#5. Extract the price, description, ratings and reviews of each product.
+
+```{r}
+library(rvest)
+library(dplyr)
+library(httr)
+
+scrape_amazon_products <- function(base_url, category, num_products = 30) {
+  all_data <- data.frame()
+  page_number <- 1
+  
+  while (nrow(all_data) < num_products) {
+    
+    url <- paste0(base_url, "&page=", page_number)
+    message("Scraping: ", url)
+    
+    page <- read_html(url)
+    
+    product_titles <- page %>%
+      html_nodes("span.a-text-normal") %>% 
+      html_text(trim = TRUE)
+    
+    product_titles <- product_titles[product_titles != "Check each product page for other buying options."]
+
+    price <- page %>% 
+      html_nodes('.a-price .a-offscreen') %>% 
+      html_text(trim = TRUE)
+    
+    ratings <- page %>% 
+      html_nodes('span.a-icon-alt') %>% 
+      html_text(trim = TRUE) %>%
+      str_extract("\\d\\.\\d") %>%  
+      as.numeric()
+    
+
+
+    reviews <- page %>%
+      html_nodes('.s-link-style .s-underline-text') %>% 
+      html_text(trim = TRUE)
+    
+    descriptions <- page %>%
+      html_nodes("span.a-text-normal") %>% 
+      html_text(trim = TRUE)
+    
+    descriptions <- descriptions[descriptions != "Check each product page for other buying options."]
+    
+    min_length <- min(length(product_titles), length(price), length(ratings), length(descriptions), length(reviews))
+    if (min_length == 0) break  
+    
+    data <- data.frame(
+      ProductTitle = head(product_titles, min_length),
+      Price = head(price, min_length),
+      Category = rep(category, min_length),
+      Ratings = head(ratings, min_length),
+      Reviews = head(reviews, min_length),
+      Description = head(descriptions, min_length)
+    )
+    
+    
+    all_data <- bind_rows(all_data, data)
+    
+    page_number <- page_number + 1
+  }
+  
+  all_data <- head(all_data, num_products)
+  
+
+  all_data$ProductTitle <- paste0(seq_len(nrow(all_data)), ". ", all_data$ProductTitle)
+  
+  return(all_data)
+}
+
+bike_url <- "https://www.amazon.com/s?k=bicycle"
+watch_url <- "https://www.amazon.com/s?k=watch"
+mousepad_url <- "https://www.amazon.com/s?k=mouse+pad"
+laptop_url <- "https://www.amazon.com/s?k=laptop"
+gamingchair_url <- "https://www.amazon.com/s?k=gaming+chair"
+
+
+
+
+bike_products <- scrape_amazon_products(bike_url, "Bicycle", 30)
+watch_products <- scrape_amazon_products(watch_url, "Watch", 30)
+mousepad_products <- scrape_amazon_products(mousepad_url, "MousePad", 30)
+laptop_products <- scrape_amazon_products(laptop_url, "Laptop", 30)
+gamingchair_products <- scrape_amazon_products(gamingchair_url, "GamingChair", 30)
+
+all_products <- bind_rows(bike_products, watch_products, mousepad_products, laptop_products, gamingchair_products)
+
+all_products
+
+write.csv(all_products, "Amazon_products.csv")
+```
+
+
+#6. The data gave 30 products each for 5 categories, the data was extracted from Amazon and saved into a csv. The data shows the price, description, ratings for every products in a category.
+
+#7. The use case for the data we have extracted is for the market research for the products in Amazon.
+
+#8. The graphs gave information about the prices, popularity, customer satisfaction and reviews which reveals the relation between ratings and reviews that indicates which products are the most popular and most purchased among that category.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+
+all_products <- read.csv("Amazon_products.csv")
+
+
+all_products$Price <- as.numeric(gsub("[$,]", "", all_products$Price))
+
+
+all_products <- all_products %>%
+  filter(!is.na(Price), !is.na(Ratings), !is.na(Reviews))
+
+
+ggplot(all_products, aes(x = Price)) +
+  geom_histogram(binwidth = 50, fill = "skyblue", color = "black") +
+  labs(title = "Distribution of Product Prices", x = "Price ($)", y = "Count") +
+  theme_minimal()
+
+
+avg_ratings <- all_products %>%
+  group_by(Category) %>%
+  summarize(AverageRating = mean(Ratings, na.rm = TRUE))
+
+ggplot(avg_ratings, aes(x = Category, y = AverageRating, fill = Category)) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Average Ratings by Category", x = "Category", y = "Average Rating") +
+  theme_minimal()
+
+
+total_reviews <- all_products %>%
+  group_by(Category) %>%
+  summarize(TotalReviews = sum(as.numeric(gsub("[^0-9]", "", Reviews)), na.rm = TRUE))
+
+ggplot(total_reviews, aes(x = Category, y = TotalReviews, fill = Category)) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Total Number of Reviews by Category", x = "Category", y = "Total Reviews") +
+  theme_minimal()
+
+
+ggplot(all_products, aes(x = Ratings, y = as.numeric(gsub("[^0-9]", "", Reviews)))) +
+  geom_point(alpha = 0.6, color = "purple") +
+  labs(title = "Correlation Between Ratings and Reviews", x = "Ratings", y = "Number of Reviews") +
+  theme_minimal()
+
+```
+9.  
+```{r}
+library(ggplot2)
+
+ggplot(all_products, aes(x = Price, y = Ratings, color = Category)) +
+  geom_point() +
+  facet_wrap(~ Category, scales = "free") +
+  labs(title = "Ratings vs Price for Each Category",
+       x = "Price ($)",
+       y = "Ratings") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+#10. The ranking of products in each category sorts it from highest to lowest, showing which product has the most reviews and purchases. These products can be customize into ascending and descending order that helps the users in selecting products that fits their taste. It also gives info in which products can be the most correct choice and which product shall be avoided.
+
+```{r}
+
+all_products <- read.csv("Amazon_products.csv")
+
+
+str(all_products)
+
+```
+
+```{r}
+
+
+all_goods <- read.csv("Amazon_products.csv")
+
+all_goods$Ratings <- as.numeric(all_goods$Ratings)
+
+
+
+library(dplyr)
+
+
+ranked_by_ratings <- all_goods %>%
+  arrange(desc(Ratings))
+
+
+head(ranked_by_ratings, 150)  
+
+
+```
+
+```{r}
+setwd("/cloud/project")
+
+all_goods <- read.csv("Amazon_products.csv")
+
+
+all_goods$Price <- as.numeric(gsub("\\$", "", all_goods$Price))
+
+
+library(dplyr)
+ranked_by_price_ascending <- all_goods %>%
+  arrange(Price)
+
+
+ranked_by_price_descending <- all_goods %>%
+  arrange(desc(Price))
+
+
+head(ranked_by_price_descending, 150) 
+
+```
+
+
+
+```{r}
+
+library(rvest)
+library(dplyr)
+library(stringr)
+
+
+product_links <- c(
+  "https://www.amazon.com/RoyalBaby-Stargirl-Bicycle-Children-Kickstand/dp/B0B4JVHWNK/ref=sr_1_1_sspa",
+  "https://www.amazon.com/JOYSTAR-Princess-Children-Kickstand-Bicycles/dp/B0CQP79W9R/ref=sr_1_2_sspa",
+  "https://www.amazon.com/Huffy-Mountain-21-Speed-Hardtail-24-inch/dp/B0CF76V8KX/ref=sr_1_3",
+  "https://www.amazon.com/JOYSTAR-Handbrake-Children-Princess-Training/dp/B08Q7P1QGN/ref=sr_1_4",
+  "https://www.amazon.com/JOYSTAR-Freestyle-Beginner-Riders-Bicycles/dp/B0CJ8STYD7/ref=sr_1_5",
+  "https://www.amazon.com/HH-HILAND-Mountain-High-Tensile-Hardtail/dp/B0DDPYJ42Q/ref=sr_1_6",
+  "https://www.amazon.com/HH-HILAND-Toddlers-Training-Wheels/dp/B0D8332CLB/ref=sr_1_7_sspa",
+  "https://www.amazon.com/JOYSTAR-Bicycle-Training-Coaster-Assembled/dp/B07QYLWKHM/ref=sr_1_8",
+  "https://www.amazon.com/JOYSTAR-Bicycle-Training-Wheels-Assembled/dp/B07PGD7X2Q/ref=sr_1_9",
+  "https://www.amazon.com/Mountain-1-Speed-Handbrakes-Children-Bicycle/dp/B08BYLG1QR/ref=sr_1_10"
+)
+
+product_names <- c(
+  "Royalbaby Stargirl Kids Bike Girls",
+  "JOYSTAR Girls Bike for Toddlers and Kids Age 3-10 Years",
+  "Huffy Stone Mountain Hardtail Mountain Bike for Boys/Girls/Men/Women",
+  "JOYSTAR Little Daisy Kids Bike for Girls Boys Ages 2-7 Years",
+  "JOYSTAR Brockway Freestyle Kids BMX Bikes",
+  "HILAND 26 27.5 Inch Mountain Bike",
+  "HILAND Girls Bike for Toddlers and Kids Ages 2-7 Years Old",
+  "JOYSTAR Kids Bike for Ages 2-12 Years Old Boys Girls",
+  "JOYSTAR Angel Girls Bike for Toddlers and Kids Ages 2-13 Years Old",
+  "Hiland 20 Inch Kids Mountain Bike for Boys"
+)
+
+category <- "Bicycle"
+
+
+all_reviews <- data.frame()
+
+
+for (i in seq_along(product_links)) {
+ 
+  url <- product_links[i]
+  product_name <- product_names[i]
+  
+ 
+  try({
+    webpage <- read_html(url)
+    
+    
+    reviews <- webpage %>%
+      html_nodes(".review")
+    
+ 
+    reviewer_names <- reviews %>%
+      html_nodes(".a-profile-name") %>%
+      html_text(trim = TRUE)
+    
+   
+    review_dates <- reviews %>%
+      html_nodes(".review-date") %>%
+      html_text(trim = TRUE)
+    
+ 
+    review_titles <- reviews %>%
+      html_nodes(".review-title span") %>%
+      html_text(trim = TRUE)
+    
+  
+    review_comments <- reviews %>%
+      html_nodes(".review-text-content span") %>%
+      html_text(trim = TRUE) %>%
+  str_remove("5.0 out of 5 stars")%>%
+  str_remove("4.0 out of 5 stars") %>%
+  str_remove("1.0 out of 5 stars") %>%
+  str_remove("3.0 out of 5 stars") 
+    
+   
+    verified_purchases <- reviews %>%
+      html_nodes("span.a-size-mini a-color-state a-text-bold") %>%
+      html_text(trim = TRUE)
+ 
+    star_ratings <- reviews %>%
+      html_nodes(".a-icon-alt") %>%
+      html_text(trim = TRUE) %>%
+      str_extract("\\d\\.\\d") %>%  # Extract the numeric rating
+      as.numeric()
+    
+    max_reviews <- min(20, length(reviewer_names))
+    reviewer_names <- reviewer_names[1:max_reviews]
+    review_dates <- review_dates[1:max_reviews]
+    review_titles <- review_titles[1:max_reviews]
+    review_comments <- review_comments[1:max_reviews]
+    verified_purchases <- verified_purchases[1:max_reviews]
+    star_ratings <- star_ratings[1:max_reviews]
+    
+ 
+    review_data <- data.frame(
+      Category = rep(category, max_reviews),
+      ProductName = rep(product_name, max_reviews),
+      Reviewer = reviewer_names,
+      Date = review_dates,
+      Title = review_titles,
+      Comment = review_comments,
+      StarRating = star_ratings,
+      VerifiedPurchase = verified_purchases,
+      stringsAsFactors = FALSE
+    )
+    
+   
+    all_reviews <- bind_rows(all_reviews, review_data)
+  }, silent = TRUE)
+}
+
+print(all_reviews)
+
+write.csv(all_reviews, "Bicycle_reviews.csv")
+
+```
+
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+product_links <- c(
+  "https://www.amazon.com/Amazon-Essentials-Digital-Chronograph-Black/dp/B07YQFY579/ref=sr_1_1_ffob_sspa",
+  "https://www.amazon.com/Fitness-Activity-Trackers-Waterproof-Smartwatch/dp/B0D2NJ3SKP/ref=sr_1_2_sspa",
+  "https://www.amazon.com/OLEVS-Watches-Silver-Stainless-Luxury/dp/B0C3CRFZJC/ref=sr_1_3_sspa",
+  "https://www.amazon.com/TOOBUR-Pedometer-Waterproof-Smartwatch-Compatible/dp/B0D7HNZM63/ref=sr_1_4_sspa",
+  "https://www.amazon.com/Casio-AE-1500WH-5AVCF-10-Year-Battery/dp/B08VMTXZP1/ref=sr_1_5",
+  "https://www.amazon.com/Fossil-Quartz-Stainless-Leather-Chronograph/dp/B017SN1OI8/ref=sr_1_6",
+  "https://www.amazon.com/Timex-T49963-Expedition-Scout-Leather/dp/B00HF49WXK/ref=sr_1_7",
+  "https://www.amazon.com/Fossil-Minimalist-Quartz-Stainless-Leather/dp/B079DD13WB/ref=sr_1_8",
+  "https://www.amazon.com/Casio-F108WH-Illuminator-Collection-Digital/dp/B0053HBJBE/ref=sr_1_9",
+  "https://www.amazon.com/Casio-Vintage-Quartz-Resistant-Classic/dp/B000GB0G7A/ref=sr_1_10"
+)
+
+product_names <- c(
+  "Amazon Essentials Men's Digital Chronograph Black Resin Strap Water Resistant Watch",
+  "Smart Watch for Women Answer/Make Calls, 1.9 HD Fitness Watch with Heart Rate Monitor Sleep Monitor",
+  "OLEVS Men Watch,Big Dial Watches for Men Stainless Steel",
+  "Smart Watch for Women Men, Alexa Built-in, Answer/Make Calls, 1.83 Fitness Tracker Watch with Heart Rate Monitor",
+  "Casio Illuminator AE1500WH Series",
+  "Fossil Grant Men's Watch with Chronograph or Automatic Display and Genuine Leather or Stainless Steel Band",
+  "Timex Men's Expedition Scout 40mm Watch",
+  "Fossil Minimalist Men's Watch with Leather or Stainless Steel Band",
+  "Casio F108WH Series",
+  "Casio MQ24 Series"
+)
+
+category <- "watch"
+
+all_reviews <- data.frame()
+
+for (i in seq_along(product_links)) {
+  # Get the product link and name
+  url <- product_links[i]
+  product_name <- product_names[i]
+  
+  try({
+    webpage <- read_html(url)
+    
+    reviews <- webpage %>%
+      html_nodes(".review")
+    
+    reviewer_names <- reviews %>%
+      html_nodes(".a-profile-name") %>%
+      html_text(trim = TRUE)
+    
+    review_dates <- reviews %>%
+      html_nodes(".review-date") %>%
+      html_text(trim = TRUE)
+    
+    review_titles <- reviews %>%
+      html_nodes(".review-title span") %>%
+      html_text(trim = TRUE) %>%
+  str_remove("5.0 out of 5 stars")%>%
+  str_remove("4.0 out of 5 stars") %>%
+  str_remove("1.0 out of 5 stars") %>%
+  str_remove("3.0 out of 5 stars")
+    
+    review_comments <- reviews %>%
+      html_nodes(".review-text-content span") %>%
+      html_text(trim = TRUE)
+    
+    verified_purchases <- reviews %>%
+      html_nodes(".review-vp-label") %>%
+      html_text(trim = TRUE)
+    
+    star_ratings <- reviews %>%
+      html_nodes(".a-icon-alt") %>%
+      html_text(trim = TRUE) %>%
+      str_extract("\\d\\.\\d") %>% 
+      as.numeric()
+    
+    max_reviews <- min(20, length(reviewer_names))
+    reviewer_names <- reviewer_names[1:max_reviews]
+    review_dates <- review_dates[1:max_reviews]
+    review_titles <- review_titles[1:max_reviews]
+    review_comments <- review_comments[1:max_reviews]
+    verified_purchases <- verified_purchases[1:max_reviews]
+    star_ratings <- star_ratings[1:max_reviews]
+    
+    review_data <- data.frame(
+      Category = rep(category, max_reviews),
+      ProductName = rep(product_name, max_reviews),
+      Reviewer = reviewer_names,
+      Date = review_dates,
+      Title = review_titles,
+      Comment = review_comments,
+      StarRating = star_ratings,
+      VerifiedPurchase = verified_purchases,
+      stringsAsFactors = FALSE
+    )
+    
+    all_reviews <- bind_rows(all_reviews, review_data)
+  }, silent = TRUE)
+}
+
+print(all_reviews)
+
+write.csv(all_reviews, "Watches_reviews.csv")
+
+
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+product_links <- c(
+  "https://www.amazon.com/Amazon-Basics-Square-Rubberized-Standard/dp/B06X3W3YQD/ref=sr_1_1_ffob_sspa",
+  "https://www.amazon.com/Varsamp-Ergonomic-Mousepad-Comfortable-Non-Slip/dp/B0CNBS4HT3/ref=sr_1_2_sspa",
+  "https://www.amazon.com/JIKIOU-Ergonomic-Comfortable-Non-Slip-Computer/dp/B081DHV2PW/ref=sr_1_3_sspa",
+  "https://www.amazon.com/eulps-Ergonomic-Comfortable-Computer-Mousepad/dp/B0BWMXZPGQ/ref=sr_1_4_sspa",
+  "https://www.amazon.com/SteelSeries-Heavy-Cloth-Gaming-Mouse/dp/B00WAA2704/ref=sr_1_5",
+  "https://www.amazon.com/MROCO-Ergonomic-Comfortable-Mousepad-Non-Slip/dp/B07DVCGX7G/ref=sr_1_6",
+  "https://www.amazon.com/Foroffice-Comfortable-Wholesale-Mousepads-10-2x8-3x0-12inch/dp/B07C3XZMC6/ref=sr_1_7",
+  "https://www.amazon.com/Japanese-Gaming-Extended-Kanagawa-Non-Slip/dp/B0BB3B8G45/ref=sr_1_8",
+  "https://www.amazon.com/Ergonomic-Support-Mousepad-Computer-Wireless/dp/B0C4636DG1/ref=sxin_13_pa_sp_search_thematic_sspa",
+  "https://www.amazon.com/Hokafenle-Ergonomic-Stepped-Wedge-Mousepad-Wireless/dp/B0CM2CWHWD/ref=sxin_13_pa_sp_search_thematic_sspa"
+)
+
+product_names <- c(
+  "Amazon Basics Square Mouse Pad, Cloth with Rubberized Base, Standard, Black",
+  "Ergonomic Mouse Pad with Wrist Rest Support",
+  "JIKIOU Mouse Pad, 2 Pack Ergonomic Mouse Pads with Comfortable Gel Wrist Rest Support and Lycra Cloth",
+  "eulps Mouse Pad Wrist Support, Ergonomic Gel Mouse Pad with Wrist Rest",
+  "SteelSeries QcK Gaming Mouse Pad - XXL Thick Cloth - Sized to Cover Desks",
+  "MROCO Ergonomic Mouse Pad with Gel Wrist Rest",
+  "JIKIOU 3 Pack Mouse Pad with Stitched Edge",
+  "Japanese Sea Wave Large Mouse Pad, Anime Black Gaming",
+  "Ergonomic Mouse Pad Wrist Support with Memory Foam Massage Bulge",
+  "Hokafenle Ergonomic Mouse Pad Wrist Support with Stepped-Wedge Design"
+)
+
+category <- "MousePad"
+
+all_reviews <- data.frame()
+
+for (i in seq_along(product_links)) {
+
+  url <- product_links[i]
+  product_name <- product_names[i]
+  
+  try({
+    webpage <- read_html(url)
+    
+    reviews <- webpage %>%
+      html_nodes(".review")
+    
+    reviewer_names <- reviews %>%
+      html_nodes(".a-profile-name") %>%
+      html_text(trim = TRUE)
+    
+    review_dates <- reviews %>%
+      html_nodes(".review-date") %>%
+      html_text(trim = TRUE)
+    
+    review_titles <- reviews %>%
+      html_nodes(".review-title span") %>%
+      html_text(trim = TRUE) %>%
+  str_remove("5.0 out of 5 stars")%>%
+  str_remove("4.0 out of 5 stars") %>%
+  str_remove("1.0 out of 5 stars") %>%
+  str_remove("3.0 out of 5 stars")
+    
+    review_comments <- reviews %>%
+      html_nodes(".review-text-content span") %>%
+      html_text(trim = TRUE)
+    
+    verified_purchases <- reviews %>%
+      html_nodes(".review-vp-label") %>%
+      html_text(trim = TRUE)
+    
+    star_ratings <- reviews %>%
+      html_nodes(".a-icon-alt") %>%
+      html_text(trim = TRUE) %>%
+      str_extract("\\d\\.\\d") %>%  # Extract the numeric rating
+      as.numeric()
+    
+    max_reviews <- min(20, length(reviewer_names))
+    reviewer_names <- reviewer_names[1:max_reviews]
+    review_dates <- review_dates[1:max_reviews]
+    review_titles <- review_titles[1:max_reviews]
+    review_comments <- review_comments[1:max_reviews]
+    verified_purchases <- verified_purchases[1:max_reviews]
+    star_ratings <- star_ratings[1:max_reviews]
+    
+    review_data <- data.frame(
+      Category = rep(category, max_reviews),
+      ProductName = rep(product_name, max_reviews),
+      Reviewer = reviewer_names,
+      Date = review_dates,
+      Title = review_titles,
+      Comment = review_comments,
+      StarRating = star_ratings,
+      VerifiedPurchase = verified_purchases,
+      stringsAsFactors = FALSE
+    )
+    
+    all_reviews <- bind_rows(all_reviews, review_data)
+  }, silent = TRUE)
+}
+
+print(all_reviews)
+
+write.csv(all_reviews, "MousePad_reviews.csv")
+
+```
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+product_links <- c(
+  "https://www.amazon.com/Amazon-powerful-octa-core-processor-lockscreen/dp/B0B2SFTGQ6/ref=sr_1_1_ffob_sspa",
+  "https://www.amazon.com/Certified-Refurbished-tablet-latest-release/dp/B08F5LRHB4/ref=sr_1_2_ffob_sspa",
+  "https://www.amazon.com/HP-Stream-BrightView-N4120-Graphics/dp/B0CZKPF2QH/ref=sr_1_3",
+  "https://www.amazon.com/A315-24P-R7VH-Display-Quad-Core-Processor-Graphics/dp/B0BS4BP8FB/ref=sr_1_4",
+  "https://www.amazon.com/ASUS-Chromebook-Processor-Transparent-CX1400CKA-AS88F/dp/B0CRTJ1LZ4/ref=sr_1_5",
+  "https://www.amazon.com/ASUS-Chromebook-Processor-Transparent-CX1500CKA-AS84F/dp/B0CRD43GY6/ref=sr_1_6",
+  "https://www.amazon.com/Fire-7-Tablet/dp/B096WKKK2K/ref=sr_1_7_ffob_sspa",
+  
+  "https://www.amazon.com/Lenovo-Business-Dual-Core-Processor-Bluetooth/dp/B0DLGXYX8Z/ref=sr_1_8",
+  "https://www.amazon.com/Naclud-Computers-Quad-Core-Portable-Notebook/dp/B0DK5R79LM/ref=sr_1_9",
+  "https://www.amazon.com/Naclud-Laptops-Computer-Quad-Core-Computers/dp/B0DK5NNMHG/ref=sr_1_10"
+)
+
+product_names <- c(
+  "Amazon Fire Max 11 tablet (newest model) vivid 11” display",
+  "Certified Refurbished Fire HD 10 tablet",
+  "HP Stream 14 HD BrightView Laptop, Intel Celeron N4120, 16GB RAM, 288GB Storage (128GB eMMC + 160GB Docking Station Set)",
+  "Acer Aspire 3 A315-24P-R7VH Slim Laptop",
+  "ASUS Chromebook CX1, 14 FHD",
+  "ASUS Chromebook CX1",
+  "Amazon Fire 7 tablet (newest model) 7",
+  "Lenovo V15 Newest 15.6",
+  "Windows 11 Laptop Computers",
+  "15.6 Inch Laptops"
+)
+
+category <- "Laptop"
+
+all_reviews <- data.frame()
+
+for (i in seq_along(product_links)) {
+  
+  url <- product_links[i]
+  product_name <- product_names[i]
+  
+  try({
+    webpage <- read_html(url)
+    
+    reviews <- webpage %>%
+      html_nodes(".review")
+    
+    reviewer_names <- reviews %>%
+      html_nodes(".a-profile-name") %>%
+      html_text(trim = TRUE)
+    
+    review_dates <- reviews %>%
+      html_nodes(".review-date") %>%
+      html_text(trim = TRUE)
+    
+    review_titles <- reviews %>%
+      html_nodes(".review-title span") %>%
+      html_text(trim = TRUE) %>%
+  str_remove("5.0 out of 5 stars")%>%
+  str_remove("4.0 out of 5 stars") %>%
+  str_remove("1.0 out of 5 stars") %>%
+  str_remove("3.0 out of 5 stars")
+    
+    review_comments <- reviews %>%
+      html_nodes(".review-text-content span") %>%
+      html_text(trim = TRUE)
+    
+    verified_purchases <- reviews %>%
+      html_nodes(".review-vp-label") %>%
+      html_text(trim = TRUE)
+    
+    star_ratings <- reviews %>%
+      html_nodes(".a-icon-alt") %>%
+      html_text(trim = TRUE) %>%
+      str_extract("\\d\\.\\d") %>%  # Extract the numeric rating
+      as.numeric()
+    
+    max_reviews <- min(20, length(reviewer_names))
+    reviewer_names <- reviewer_names[1:max_reviews]
+    review_dates <- review_dates[1:max_reviews]
+    review_titles <- review_titles[1:max_reviews]
+    review_comments <- review_comments[1:max_reviews]
+    verified_purchases <- verified_purchases[1:max_reviews]
+    star_ratings <- star_ratings[1:max_reviews]
+    
+    review_data <- data.frame(
+      Category = rep(category, max_reviews),
+      ProductName = rep(product_name, max_reviews),
+      Reviewer = reviewer_names,
+      Date = review_dates,
+      Title = review_titles,
+      Comment = review_comments,
+      StarRating = star_ratings,
+      VerifiedPurchase = verified_purchases,
+      stringsAsFactors = FALSE
+    )
+    
+    all_reviews <- bind_rows(all_reviews, review_data)
+  }, silent = TRUE)
+}
+
+print(all_reviews)
+
+write.csv(all_reviews, "Laptop_reviews.csv")
+
+
+```
+
+
+
+
+```{r}
+library(rvest)
+library(dplyr)
+library(stringr)
+
+product_links <- c(
+  "https://www.amazon.com/GTRACING-Footrest-Bluetooth-Speakers-Ergonomic/dp/B08915T3KF/ref=sr_1_2_sspa",
+  "https://www.amazon.com/RESPAWN-110-Ergonomic-Gaming-Chair/dp/B09V89KMTZ/ref=sr_1_3_sspa",
+  "https://www.amazon.com/AA-Products-Ergonomic-Computer-Adjustable/dp/B0D863FWCT/ref=sr_1_4_sspa",
+  "https://www.amazon.com/GTRACING-Footrest-Ergonomic-Reclining-Adjustment/dp/B0CD7XGLGD/ref=sr_1_5",
+  "https://www.amazon.com/BestOffice-Gaming-Executive-Headrest-Computer/dp/B07KJYY9BD/ref=sr_1_6",
+  "https://www.amazon.com/PZDO-Footrest-Computer-Ergonomic-Recliner/dp/B0DFWQPW4J/ref=sr_1_7",
+  "https://www.amazon.com/GTRACING-Footrest-Bluetooth-Chair%E3%80%90Patented-Ergonomic/dp/B07QGY4VGK/ref=sr_1_8",
+  "https://www.amazon.com/ECOTOUGE-Headrest-Massage-Ergonomic-Recliner/dp/B0939ZDNDL/ref=sr_1_9",
+  "https://www.amazon.com/OneGame-Computer-155%C2%B0Adjustable-Backrest-Ergonomic/dp/B0CNZ19YTS/ref=sr_1_10",
+  "https://www.amazon.com/Vixtvvn-Ergonomic-Adjustable-Headrest-Executive/dp/B0DNTCG7G8/ref=sr_1_12_sspa"
+)
+
+product_names <- c(
+  "GTRACING Gaming Chair with Footrest",
+  "RESPAWN 110 Gaming Chair",
+  "AA Products Gaming Chair High Back Ergonomic Computer",
+  "GTRACING Gaming Chair with Footrest, Ergonomic Computer",
+  "BestOffice High-Back Gaming Chair PC",
+  "Gaming Chair, Gaming Chairs for Adults with Footrest",
+  "GTRACING Gaming Chair with Footrest Speakers Video Game",
+  "ECOTOUGE PC Gaming Chair",
+  "OneGame Gaming Chair",
+  "X Rocker PC Computer Video Gaming"
+)
+
+category <- "GamingChair"
+
+all_reviews <- data.frame()
+
+for (i in seq_along(product_links)) {
+  
+  url <- product_links[i]
+  product_name <- product_names[i]
+  
+  try({
+    webpage <- read_html(url)
+    
+    reviews <- webpage %>%
+      html_nodes(".review")
+    
+    reviewer_names <- reviews %>%
+      html_nodes(".a-profile-name") %>%
+      html_text(trim = TRUE)
+    
+    review_dates <- reviews %>%
+      html_nodes(".review-date") %>%
+      html_text(trim = TRUE)
+    
+    review_titles <- reviews %>%
+      html_nodes(".review-title span") %>%
+      html_text(trim = TRUE) %>%
+  str_remove("5.0 out of 5 stars")%>%
+  str_remove("4.0 out of 5 stars") %>%
+  str_remove("1.0 out of 5 stars") %>%
+  str_remove("3.0 out of 5 stars")
+    
+    review_comments <- reviews %>%
+      html_nodes(".review-text-content span") %>%
+      html_text(trim = TRUE)
+    
+    verified_purchases <- reviews %>%
+      html_nodes(".review-vp-label") %>%
+      html_text(trim = TRUE)
+    
+    star_ratings <- reviews %>%
+      html_nodes(".a-icon-alt") %>%
+      html_text(trim = TRUE) %>%
+      str_extract("\\d\\.\\d") %>% 
+      as.numeric()
+    
+    max_reviews <- min(20, length(reviewer_names))
+    reviewer_names <- reviewer_names[1:max_reviews]
+    review_dates <- review_dates[1:max_reviews]
+    review_titles <- review_titles[1:max_reviews]
+    review_comments <- review_comments[1:max_reviews]
+    verified_purchases <- verified_purchases[1:max_reviews]
+    star_ratings <- star_ratings[1:max_reviews]
+    
+    review_data <- data.frame(
+      Category = rep(category, max_reviews),
+      ProductName = rep(product_name, max_reviews),
+      Reviewer = reviewer_names,
+      Date = review_dates,
+      Title = review_titles,
+      Comment = review_comments,
+      StarRating = star_ratings,
+      VerifiedPurchase = verified_purchases,
+      stringsAsFactors = FALSE
+      
+      
+    )
+   
+    all_reviews <- bind_rows(all_reviews, review_data)
+  }, silent = TRUE)
+}
+
+print(all_reviews)
+
+write.csv(all_reviews, "GamingChair_reviews.csv")
+
+
+```
+
+
+
+
